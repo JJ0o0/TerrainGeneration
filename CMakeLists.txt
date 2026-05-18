@@ -25,6 +25,7 @@ src/graphics/Terrain.cpp
 src/graphics/Camera.cpp
 src/graphics/Chunk.cpp
 src/graphics/ChunkManager.cpp
+src/graphics/Water.cpp
 src/utilities/Log.cpp
 src/utilities/UI.cpp
 vendor/glad.c

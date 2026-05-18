@@ -23,7 +23,6 @@ Chunk::~Chunk() {
 }
 
 void Chunk::render(Shader &shader) {
-  shader.bind();
   m_mesh->bind();
   m_mesh->draw();
 }

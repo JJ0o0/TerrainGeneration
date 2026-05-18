@@ -14,7 +14,9 @@ ChunkManager::ChunkManager(int renderDistance, int chunkSize, int scale,
 ChunkManager::~ChunkManager() {
   for (auto &[key, chunk] : m_chunks) {
     delete chunk;
+    chunk = nullptr;
   }
+
   m_chunks.clear();
 }
 
@@ -78,6 +80,7 @@ void ChunkManager::update(const glm::vec3 &cameraPos) {
 }
 
 void ChunkManager::render(Shader &shader) {
+  shader.bind();
   for (auto &[key, chunk] : m_chunks) {
     chunk->render(shader);
   }
