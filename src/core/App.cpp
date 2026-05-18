@@ -121,7 +121,7 @@ void App::update() {
   m_deltatime = (now - m_last) / 1000.0f;
   m_last = now;
 
-  m_time += m_deltatime * 0.1;
+  m_time += m_deltatime * 0.01;
   if (m_time > 1.0f) {
     m_time -= 1.0f;
   }
