@@ -2,14 +2,16 @@
 #include <TerrainGeneration/graphics/Vertex.hpp>
 #include <TerrainGeneration/utilities/Log.hpp>
 #include <TerrainGeneration/utilities/Random.hpp>
+#include <cmath>
 #include <stb_perlin.h>
 #include <vector>
 
 using namespace JJ0o0::TerrainGeneration::Utils;
 
 namespace JJ0o0::TerrainGeneration::Graphics {
-Terrain::Terrain(int width, int depth, int scale)
-    : m_width(width), m_depth(depth), m_scale(scale) {
+Terrain::Terrain(int width, int depth, int scale, float heightMultiplier)
+    : m_width(width), m_depth(depth), m_scale(scale),
+      m_heightMultiplier(heightMultiplier) {
   m_seedX = Utils::randomFloat(.0f, 10000.0f);
   m_seedZ = Utils::randomFloat(.0f, 10000.0f);
 
@@ -32,10 +34,10 @@ void Terrain::render(Shader &shader) {
 float Terrain::sampleHeight(float x, float z) {
   float height = 0.0f;
   float amplitude = 1.0f;
-  float frequency = 0.005f;
+  float frequency = 0.002f;
   float total = 0.0f;
 
-  for (int i = 0; i < 6; i++) {
+  for (int i = 0; i < 8; i++) {
     height += stb_perlin_noise3((x + m_seedX) * frequency, 0.0f,
                                 (z + m_seedZ) * frequency, 0, 0, 0) *
               amplitude;
@@ -44,7 +46,7 @@ float Terrain::sampleHeight(float x, float z) {
     frequency *= 2.0f;
   }
 
-  return (height / total) * 40.0f;
+  return (height / total) * m_heightMultiplier;
 }
 
 void Terrain::generate() {
@@ -53,9 +55,10 @@ void Terrain::generate() {
 
   for (int z = 0; z < m_depth; z++) {
     for (int x = 0; x < m_width; x++) {
-      Vertex vertex = {{x * m_scale, sampleHeight(x, z), z * m_scale},
-                       {.0f, 1.0f, .0f},
-                       {(float)x / m_width, (float)z / m_depth}};
+      Vertex vertex = {
+          {x * m_scale, sampleHeight(x * m_scale, z * m_scale), z * m_scale},
+          {.0f, 1.0f, .0f},
+          {(float)x / m_width, (float)z / m_depth}};
       vertices.push_back(vertex);
     }
   }

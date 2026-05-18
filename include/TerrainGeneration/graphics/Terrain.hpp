@@ -6,14 +6,14 @@
 namespace JJ0o0::TerrainGeneration::Graphics {
 class Terrain {
 public:
-  Terrain(int width, int depth, int scale);
+  Terrain(int width, int depth, int scale, float heightMultiplier);
   ~Terrain();
 
   void render(Shader &shader);
 
 private:
   int m_width, m_depth;
-  float m_scale, m_seedX, m_seedZ;
+  float m_scale, m_seedX, m_seedZ, m_heightMultiplier;
 
   Mesh *m_mesh;
 

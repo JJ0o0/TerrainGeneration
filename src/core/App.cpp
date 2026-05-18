@@ -44,7 +44,7 @@ App::App(const char *title, int width, int height)
                                   "assets/shaders/terrain.frag");
   Utils::Log::info("Shader ID: " + std::to_string(m_shader->getId()));
 
-  m_terrain = new Graphics::Terrain(100, 100, 1);
+  m_terrain = new Graphics::Terrain(128, 128, 2, 150.0f);
 
   m_camera = {{0.0f, 80.0f, 80.0f},
               {0.0f, -0.7f, -0.7f},
@@ -130,6 +130,14 @@ void App::render() {
   m_shader->setUniform("model", model);
   m_shader->setUniform("view", m_camera.getView());
   m_shader->setUniform("projection", m_camera.getProjection());
+  m_shader->setUniform("lightDir", glm::vec3(-0.5f, -1.0f, -0.3f));
+  m_shader->setUniform("lightColor", glm::vec3(1.0f, 0.95f, 0.8f));
+  m_shader->setUniform("cameraPos", m_camera.position);
+  m_shader->setUniform("fogColor",
+                       glm::vec3(Utils::BACKGROUND_GL.r, Utils::BACKGROUND_GL.g,
+                                 Utils::BACKGROUND_GL.b));
+  m_shader->setUniform("fogStart", 50.0f);
+  m_shader->setUniform("fogEnd", 250.0f);
 
   m_terrain->render(*m_shader);
 }
