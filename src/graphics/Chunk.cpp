@@ -93,6 +93,17 @@ void Chunk::generate() {
     }
   }
 
-  m_mesh = new Mesh(vertices, indices);
+  m_vertices.swap(vertices);
+  m_indices.swap(indices);
+  m_generated = true;
+}
+
+void Chunk::uploadToGPU() {
+  if (!m_generated)
+    return;
+
+  m_mesh = new Mesh(m_vertices, m_indices);
+  m_vertices.clear();
+  m_indices.clear();
 }
 } // namespace JJ0o0::TerrainGeneration::Graphics

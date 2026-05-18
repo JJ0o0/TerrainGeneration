@@ -50,7 +50,7 @@ App::App(const char *title, int width, int height)
       4, Graphics::CHUNK_SIZE, 1, 150.0f, Utils::randomFloat(0.0f, 10000.0f),
       Utils::randomFloat(0.0f, 10000.0f));
 
-  m_water = new Graphics::Water(5000.0f, 0.0f);
+  m_water = new Graphics::Water(5000.0f, -1.0f);
 
   m_camera = {{0.0f, 80.0f, 80.0f},
               {0.0f, -0.7f, -0.7f},

@@ -17,9 +17,11 @@ void main() {
     vec3 waterColor = vec3(0.15, 0.45, 0.72);
 
     vec3 norm = normalize(vec3(
-        sin(fragPos.x * 0.1 + time) * 0.1,
+        sin(fragPos.x * 0.05 + time * 0.8) * 0.05 + 
+        sin(fragPos.x * 0.13 + time * 1.2) * 0.03,
         1.0,
-        cos(fragPos.z * 0.1 + time) * 0.1
+        cos(fragPos.z * 0.05 + time * 0.8) * 0.05 +
+        cos(fragPos.z * 0.13 + time * 1.2) * 0.03
     ));
     vec3 light = normalize(-lightDir);
     float ambient = 0.4;
