@@ -36,22 +36,22 @@ void main() {
     // PRAIA
     // =========================
 
-    float beach = layer(-5.0, 8.0, height);
+    float beach = layer(-5.0, 5.0, height);
     color = mix(sand, grassLow, beach);
 
     // =========================
     // CAMPOS / FLORESTA
     // =========================
 
-    float grassBlend = layer(15.0, 55.0, height);
+    float grassBlend = layer(10.0, 80.0, height);
     color = mix(color, grassMid, grassBlend);
 
     // =========================
     // ROCHA
     // =========================
 
-    float rockHeight = layer(60.0, 95.0, height);
-    float rockSlope = smoothstep(0.32, 0.58, slope);
+    float rockHeight = layer(85.0, 120.0, height);
+    float rockSlope = smoothstep(0.35, 0.60, slope);
     float rockMask = max(rockHeight, rockSlope);
 
     color = mix(color, mountain, rockMask);
@@ -60,7 +60,7 @@ void main() {
     // NEVE
     // =========================
 
-    float snowMask = layer(110.0, 145.0, height);
+    float snowMask = layer(130.0, 160.0, height);
     snowMask *= (1.0 - rockSlope * 0.65);
 
     color = mix(color, snow, snowMask);

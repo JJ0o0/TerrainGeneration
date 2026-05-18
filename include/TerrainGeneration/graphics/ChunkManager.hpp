@@ -1,0 +1,30 @@
+#pragma once
+
+#include <TerrainGeneration/graphics/Chunk.hpp>
+#include <TerrainGeneration/graphics/Shader.hpp>
+#include <cstdint>
+#include <glm/glm.hpp>
+#include <unordered_map>
+
+namespace JJ0o0::TerrainGeneration::Graphics {
+class ChunkManager {
+public:
+  ChunkManager(int renderDistance, int chunkSize, int scale,
+               float heightMultiplier, float seedX, float seedZ);
+  ~ChunkManager();
+
+  void update(const glm::vec3 &cameraPos);
+  void render(Shader &shader);
+
+private:
+  int m_renderDistance, m_chunkSize, m_scale;
+  float m_heightMultiplier, m_seedX, m_seedZ;
+
+  std::unordered_map<uint64_t, Chunk *> m_chunks;
+
+  uint64_t hashCoord(int x, int z) const;
+  void loadChunk(int x, int z);
+  bool tryLoadOneChunk(int camChunkX, int camChunkZ);
+  void unloadFarChunks(int camChunkX, int camChunkZ);
+};
+} // namespace JJ0o0::TerrainGeneration::Graphics

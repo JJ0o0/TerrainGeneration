@@ -1,4 +1,3 @@
-#include "TerrainGeneration/utilities/Input.hpp"
 #include <SDL3/SDL_events.h>
 #include <SDL3/SDL_init.h>
 #include <SDL3/SDL_mouse.h>
@@ -17,7 +16,9 @@
 
 #include <TerrainGeneration/core/App.hpp>
 #include <TerrainGeneration/utilities/Colors.hpp>
+#include <TerrainGeneration/utilities/Input.hpp>
 #include <TerrainGeneration/utilities/Log.hpp>
+#include <TerrainGeneration/utilities/Random.hpp>
 #include <TerrainGeneration/utilities/UI.hpp>
 #include <glm/trigonometric.hpp>
 
@@ -44,7 +45,9 @@ App::App(const char *title, int width, int height)
                                   "assets/shaders/terrain.frag");
   Utils::Log::info("Shader ID: " + std::to_string(m_shader->getId()));
 
-  m_terrain = new Graphics::Terrain(128, 128, 2, 150.0f);
+  m_chunkManager = new Graphics::ChunkManager(
+      4, Graphics::CHUNK_SIZE, 1, 150.0f, Utils::randomFloat(0.0f, 10000.0f),
+      Utils::randomFloat(0.0f, 10000.0f));
 
   m_camera = {{0.0f, 80.0f, 80.0f},
               {0.0f, -0.7f, -0.7f},
@@ -69,9 +72,9 @@ App::~App() {
     m_shader = nullptr;
   }
 
-  if (m_terrain) {
-    delete m_terrain;
-    m_terrain = nullptr;
+  if (m_chunkManager) {
+    delete m_chunkManager;
+    m_chunkManager = nullptr;
   }
 
   SDL_DestroyWindow(m_window);
@@ -121,11 +124,12 @@ void App::update() {
     m_camera.position += speed * m_camera.up * m_deltatime;
   if (Utils::isKeyPressed(SDL_SCANCODE_LCTRL))
     m_camera.position -= speed * m_camera.up * m_deltatime;
+
+  m_chunkManager->update(m_camera.position);
 }
 
 void App::render() {
-  glm::mat4 model =
-      glm::translate(glm::mat4(1.0f), glm::vec3(-50.0f, 0.0f, -50.0f));
+  glm::mat4 model = glm::mat4(1.0f);
 
   m_shader->setUniform("model", model);
   m_shader->setUniform("view", m_camera.getView());
@@ -139,7 +143,7 @@ void App::render() {
   m_shader->setUniform("fogStart", 50.0f);
   m_shader->setUniform("fogEnd", 250.0f);
 
-  m_terrain->render(*m_shader);
+  m_chunkManager->render(*m_shader);
 }
 
 void App::handleEvents(const SDL_Event &event) {

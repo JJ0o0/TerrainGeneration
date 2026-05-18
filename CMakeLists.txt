@@ -23,6 +23,8 @@ src/graphics/Mesh.cpp
 src/graphics/Shader.cpp
 src/graphics/Terrain.cpp
 src/graphics/Camera.cpp
+src/graphics/Chunk.cpp
+src/graphics/ChunkManager.cpp
 src/utilities/Log.cpp
 src/utilities/UI.cpp
 vendor/glad.c

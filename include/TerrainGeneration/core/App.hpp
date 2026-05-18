@@ -7,6 +7,7 @@
 #include <SDL3/SDL_video.h>
 #include <SDL3_ttf/SDL_ttf.h>
 #include <TerrainGeneration/graphics/Camera.hpp>
+#include <TerrainGeneration/graphics/ChunkManager.hpp>
 #include <TerrainGeneration/graphics/Shader.hpp>
 #include <TerrainGeneration/graphics/Terrain.hpp>
 #include <glad/glad.h>
@@ -31,7 +32,7 @@ private:
 
   Graphics::Camera m_camera;
   Graphics::Shader *m_shader;
-  Graphics::Terrain *m_terrain;
+  Graphics::ChunkManager *m_chunkManager = nullptr;
 
   void update();
   void render();
